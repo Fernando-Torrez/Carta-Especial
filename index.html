@@ -3,205 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algo especial para ti</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Raleway:wght@300;500;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <title>Para alguien inolvidable</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #dfb36c;
+            --text-dark: #2c2627;
+            --bg-glass: rgba(255, 255, 255, 0.85);
+        }
+
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Raleway', sans-serif;
-            background: #fff;
+            font-family: 'Comfortaa', cursive;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            color: #4a4a4a;
-            background-image: linear-gradient(135deg, #FFF0F5 0%, #FFE4E1 100%);
+            background: linear-gradient(135deg, #111424 0%, #2a1b35 50%, #1a1223 100%);
         }
 
-        .scene {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1200px;
-        }
-
-        .envelope {
-            position: relative;
-            width: 360px;
-            height: 240px;
-            background: #fdfbf7;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(221, 160, 221, 0.3);
-            cursor: pointer;
-            transform-style: preserve-3d;
-            transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10;
-        }
-
-        .envelope-front {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: #fdfbf7;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            backface-visibility: hidden;
-            transform-origin: top;
-            transition: transform 0.9s ease;
-            border: 1px solid #f3ebe1;
-            box-sizing: border-box;
-        }
-
-        .envelope-flap {
-            position: absolute;
-            top: -2px;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 180px solid transparent;
-            border-right: 180px solid transparent;
-            border-top: 130px solid #f5eae0;
-            transform-origin: top;
-            transition: transform 0.9s ease;
-            z-index: 2;
-        }
-
-        .wax-seal {
-            position: absolute;
-            bottom: 15px;
-            width: 55px;
-            height: 55px;
-            background: #e6a8b1;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            box-shadow: 0 4px 10px rgba(184, 115, 128, 0.4);
-            z-index: 3;
-            animation: pulse 2.5s infinite;
-            border: 2px dashed #fff;
-        }
-
-        .open-message {
-            margin-top: 40px;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.6rem;
-            color: #b87380;
-            text-align: center;
-        }
-
-        .letter-content {
-            position: absolute;
-            left: 15px;
-            top: 10px;
-            width: 330px;
-            height: 440px;
-            background: #ffffff;
-            padding: 25px 20px;
-            border-radius: 6px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            transform: translateY(120%) scale(0.6);
-            opacity: 0;
-            transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-            z-index: 1;
-            box-sizing: border-box;
-            overflow-y: auto;
-            border: 1px solid #fff5f5;
-        }
-
-        /* Scrollbar estético para el texto */
-        .letter-content::-webkit-scrollbar {
-            width: 4px;
-        }
-        .letter-content::-webkit-scrollbar-thumb {
-            background: #f3d5d9;
-            border-radius: 4px;
-        }
-
-        .envelope.open {
-            transform: translateY(140px);
-        }
-
-        .envelope.open .envelope-flap {
-            transform: rotateX(180deg);
-            z-index: 0;
-        }
-
-        .envelope.open .envelope-front {
-            transform: rotateX(180deg);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .envelope.open .letter-content {
-            transform: translateY(-260px) scale(1);
-            opacity: 1;
-        }
-
-        .title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: #b87380;
-            margin-top: 0;
-            margin-bottom: 1.2rem;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-
-        .message {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #555555;
-            margin-bottom: 1.2rem;
-            text-align: justify;
-            font-weight: 300;
-        }
-
-        .highlight {
-            color: #c97a8e;
-            font-weight: 600;
-        }
-
-        .signature {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
-            color: #b87380;
-            margin-top: 1.5rem;
-            text-align: center;
-        }
-
-        .closing {
-            font-family: 'Playfair Display', serif;
-            font-size: 1rem;
-            color: #666;
-            margin-top: 0.5rem;
-            text-align: center;
-            font-style: italic;
-        }
-
-        .postdata {
-            margin-top: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px dashed #f3d5d9;
-            font-size: 0.85rem;
-            color: #888;
-            font-style: italic;
-            text-align: center;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 4px 10px rgba(184, 115, 128, 0.4); }
-            50% { transform: scale(1.06); box-shadow: 0 6px 15px rgba(184, 115, 128, 0.6); }
-        }
-
+        /* Fondo de estrellas */
         .stars {
             position: fixed;
             top: 0;
@@ -209,12 +32,12 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -1;
+            z-index: 1;
         }
 
         .star {
             position: absolute;
-            background-color: #f7d692;
+            background-color: #fff;
             border-radius: 50%;
             animation: twinkle var(--duration) infinite ease-in-out;
             opacity: 0;
@@ -222,54 +45,214 @@
 
         @keyframes twinkle {
             0%, 100% { opacity: 0; transform: scale(0.3); }
-            50% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+        }
+
+        /* Contenedor Principal */
+        .wrapper {
+            position: relative;
+            width: 90%;
+            max-width: 380px;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        /* Estilo del sobre mágico */
+        .magic-envelope {
+            position: absolute;
+            width: 100%;
+            height: 260px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(1);
+            opacity: 1;
+            z-index: 5;
+        }
+
+        .magic-envelope.fade-out {
+            transform: scale(0.8) translateY(-50px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .seal-button {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #f1dfbb 0%, #dfb36c 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            box-shadow: 0 8px 20px rgba(223, 179, 108, 0.4);
+            animation: float 3s infinite ease-in-out;
+            transition: transform 0.3s;
+        }
+
+        .magic-envelope:hover .seal-button {
+            transform: scale(1.08);
+        }
+
+        .envelope-text {
+            margin-top: 25px;
+            color: #f1dfbb;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Contenedor de la Carta Elegante */
+        .premium-letter {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-glass);
+            border-radius: 24px;
+            padding: 35px 25px;
+            box-sizing: border-box;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255,255,255,0.6);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            transform: scale(0.6) translateY(100px);
+            opacity: 0;
+            transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 4;
+        }
+
+        .premium-letter.show-up {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        /* Scrollbar minimalista para la carta */
+        .premium-letter::-webkit-scrollbar {
+            width: 4px;
+        }
+        .premium-letter::-webkit-scrollbar-thumb {
+            background: rgba(223, 179, 108, 0.5);
+            border-radius: 10px;
+        }
+
+        /* Contenido del Texto */
+        .letter-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.3rem;
+            color: #705427;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .letter-p {
+            font-family: 'Lora', serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        .highlight {
+            color: #9e7638;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        .letter-signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #705427;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .letter-closing {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #777;
+            text-align: center;
+            margin-top: 0.3rem;
+            font-weight: 600;
+        }
+
+        .letter-pd {
+            margin-top: 1.8rem;
+            padding-top: 1.2rem;
+            border-top: 1px dashed rgba(223, 179, 108, 0.4);
+            font-family: 'Lora', serif;
+            font-size: 0.85rem;
+            color: #555;
+            text-align: center;
+            font-style: italic;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
     </style>
 </head>
 <body>
+
     <div class="stars" id="stars"></div>
 
-    <div class="scene">
-        <div class="envelope" id="envelope">
-            <div class="envelope-flap"></div>
-            <div class="envelope-front">
-                <div class="wax-seal">🌹</div>
-                <div class="open-message">Toca aquí para abrir</div>
-            </div>
+    <div class="wrapper">
+        <!-- El nuevo sobre elegante -->
+        <div class="magic-envelope" id="magicEnvelope">
+            <div class="seal-button">✨</div>
+            <div class="envelope-text">Un mensaje para ti</div>
+        </div>
 
-            <div class="letter-content">
-                <h1 class="title">Para alguien especial</h1>
+        <!-- La carta que emerge -->
+        <div class="premium-letter" id="premiumLetter">
+            <h1 class="letter-title">Hola, tú...</h1>
+            
+            <p class="letter-p">
+                Últimamente me he quedado pensando en cómo pasan las cosas y solo puedo decirte que <span class="highlight">valió muchísimo la pena haberte escrito ese primer mensaje</span>. Lo que empezó como una simple conversación, hoy se ha convertido en la parte favorita de mi día.
+            </p>
 
-                <p class="message">
-                    Quería darte este detalle de una forma diferente porque últimamente he estado pensando mucho en nosotros y en lo mucho que disfruto cada momento que pasamos hablando. <span class="highlight">No te imaginas lo bien que me hace escucharte</span> y lo rápido que se me pasa el tiempo cuando estoy contigo.
-                </p>
+            <p class="letter-p">
+                Quizás no coincidimos a tiempo y no pude estar ahí para felicitarte en tu cumpleaños, pero creo firmemente que los tiempos son perfectos. Porque desde que empezamos a hablar de verdad, <span class="highlight">siento algo muy especial contigo</span>; es una conexión tan bonita, natural y ligera que no quiero dejar ir.
+            </p>
 
-                <p class="message">
-                    Me encanta descubrir tu forma de ver el mundo, reírme con tus ocurrencias y darme cuenta de que, poco a poco, te has convertido en esa persona con la que siempre quiero compartir mi día. Tienes una vibra increíble que me atrapa por completo.
-                </p>
+            <p class="letter-p">
+                Me encanta cómo se nos va el tiempo volando y, sobre todo, me emociona muchísimo todo lo que platicamos. Ahora mismo <span class="highlight">lo único que quiero es cumplir esa lista de planes</span> que vamos armando paso a paso... y todos los que se nos ocurran en el camino. Quiero estar ahí, compartir contigo y ver de frente esa sonrisa que tanto me gusta.
+            </p>
 
-                <p class="message">
-                    Por eso mismo, no quiero que esto se quede solo en palabras o en mensajes de pantalla. <span class="highlight">Me encantaría hacer muchísimos planes contigo</span>, salir, conocer nuevos lugares y crear recuerdos hermosos juntos. 
-                </p>
+            <p class="letter-p">
+                Gracias por cruzarte en mi camino y por hacer que hablar contigo se sienta tan increíble.
+            </p>
 
-                <p class="message">
-                    Gracias por dejarme entrar en tu vida y por hacerme sonreír tanto. Esto es solo el inicio de muchas cosas bonitas que quiero construir a tu lado.
-                </p>
+            <div class="letter-signature">Con mucho cariño,</div>
+            <div class="letter-closing">El Inge</div>
 
-                <div class="signature">Con muchísimo cariño,</div>
-                <div class="closing">Atentamente,<br>El Inge</div>
-
-                <div class="postdata">
-                    P.D.: Te lo digo siempre, pero es que de verdad tienes la sonrisa más linda de todas. ✨
-                </div>
+            <div class="letter-pd">
+                P.D.: Cada plan que imaginamos se queda guardado aquí... y ya me muero por empezar el primero a tu lado. ✨
             </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Generador de estrellas de fondo
             const starsContainer = document.getElementById('stars');
-            for (let i = 0; i < 40; i++) {
+            for (let i = 0; i < 45; i++) {
                 const star = document.createElement('div');
                 star.classList.add('star');
                 star.style.width = Math.random() * 3 + 1 + 'px';
@@ -277,16 +260,19 @@
                 star.style.left = Math.random() * 100 + 'vw';
                 star.style.top = Math.random() * 100 + 'vh';
                 star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
-                star.style.animationDelay = Math.random() * 4 + 's';
+                star.style.animationDelay = Math.random() * 3 + 's';
                 starsContainer.appendChild(star);
             }
 
-            const envelope = document.getElementById('envelope');
-            envelope.addEventListener('click', function(e) {
-                // Evita que se cierre por accidente si se hace scroll dentro de la carta
-                if (e.target.closest('.letter-content')) return;
-                
-                this.classList.toggle('open');
+            // Animación de apertura
+            const magicEnvelope = document.getElementById('magicEnvelope');
+            const premiumLetter = document.getElementById('premiumLetter');
+
+            magicEnvelope.addEventListener('click', () => {
+                magicEnvelope.classList.add('fade-out');
+                setTimeout(() => {
+                    premiumLetter.classList.add('show-up');
+                }, 300); // Pequeño delay para que se aprecie la transición
             });
         });
     </script>
