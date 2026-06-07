@@ -4,183 +4,314 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para alguien especial</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Quicksand:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
     <style>
         :root {
-            --sky: #8bd3f7;
-            --sky-deep: #49a9e2;
-            --mist: #e9f7ff;
-            --ink: #2f3a44;
-            --card-white: rgba(255, 255, 255, 0.9);
+            --rose-pastel: #e6a8b1;
+            --rose-deep: #b87380;
+            --rose-light: #FFF0F5;
+            --rose-bg: #FFE4E1;
+            --text-dark: #2f2527;
+            --bg-glass: rgba(255, 255, 255, 0.9);
         }
+
+        * { box-sizing: border-box; }
 
         body {
             margin: 0; padding: 0;
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Comfortaa', cursive;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            background: radial-gradient(circle at 20% 10%, var(--mist) 0%, #fff 100%);
+            background: linear-gradient(135deg, var(--rose-light) 0%, var(--rose-bg) 100%);
         }
 
-        /* Estrellas celestes de fondo */
-        .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+        /* Fondo de estrellas mágicas */
+        .stars { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
         .star {
-            position: absolute; background: var(--sky); border-radius: 50%;
+            position: absolute; background-color: var(--rose-deep); border-radius: 50%;
             animation: twinkle var(--duration) infinite ease-in-out; opacity: 0;
         }
-        @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 0.6; transform: scale(1.2); } }
-
-        .scene { position: relative; z-index: 10; perspective: 1200px; }
-
-        /* Sobre Estilo Cristal */
-        .envelope {
-            position: relative; width: 350px; height: 230px;
-            background: var(--card-white);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(139, 211, 247, 0.3);
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(73, 169, 226, 0.15);
-            cursor: pointer;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 0.5; transform: scale(1.2); }
         }
 
-        .envelope.open { transform: translateY(150px) scale(0.9); opacity: 0; pointer-events: none; }
-
-        .seal {
-            width: 60px; height: 60px;
-            background: linear-gradient(135deg, var(--sky) 0%, var(--sky-deep) 100%);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            color: white; font-size: 24px;
-            box-shadow: 0 5px 15px rgba(73, 169, 226, 0.4);
-            animation: float 3s infinite ease-in-out;
+        /* Contenedor Principal */
+        .wrapper {
+            position: relative;
+            width: 90%;
+            max-width: 380px;
+            height: 520px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
         }
 
-        .envelope-text { margin-top: 20px; color: var(--sky-deep); font-weight: 600; letter-spacing: 1px; }
-
-        /* Carta que emerge */
-        .letter {
-            position: absolute; top: 50%; left: 50%;
-            width: min(380px, 90vw); max-height: 85vh;
-            background: white; padding: 35px 30px;
+        /* Sobre Estilo Cristal Esmerilado */
+        .magic-envelope {
+            position: absolute;
+            width: 100%;
+            height: 260px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            transform: translate(-50%, -50%) scale(0.5);
-            opacity: 0; pointer-events: none;
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            overflow-y: auto; z-index: 20;
-            border-top: 6px solid var(--sky);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 35px rgba(184, 115, 128, 0.15);
+            cursor: pointer;
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(1);
+            opacity: 1;
+            z-index: 5;
         }
 
-        .letter.show { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+        .magic-envelope.fade-out {
+            transform: scale(0.8) translateY(-30px);
+            opacity: 0;
+            pointer-events: none;
+        }
 
-        h1 { font-family: 'Playfair Display', serif; color: var(--sky-deep); font-size: 1.8rem; text-align: center; margin-bottom: 20px; }
-        p { line-height: 1.7; color: var(--ink); font-size: 1rem; text-align: justify; margin-bottom: 15px; }
-        em { color: var(--sky-deep); font-style: normal; font-weight: 600; }
+        .seal-button {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #fff 0%, var(--rose-pastel) 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 26px;
+            box-shadow: 0 6px 18px rgba(184, 115, 128, 0.3);
+            animation: float 3s infinite ease-in-out;
+            transition: transform 0.3s;
+            border: 2px dashed #fff;
+        }
 
-        .buttons { display: flex; gap: 10px; justify-content: center; margin: 25px 0; }
+        .envelope-text {
+            margin-top: 25px;
+            color: var(--rose-deep);
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        /* Carta Elegante */
+        .premium-letter {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-glass);
+            border-radius: 24px;
+            padding: 40px 25px 30px;
+            box-shadow: 0 20px 50px rgba(184, 115, 128, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-top: 6px solid var(--rose-pastel);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            transform: scale(0.6) translateY(100px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 4;
+        }
+
+        .premium-letter.show-up {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Botón para Cerrar Carta */
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            background: rgba(184, 115, 128, 0.1);
+            color: var(--rose-deep);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            z-index: 10;
+        }
+        .close-btn:hover {
+            background: rgba(184, 115, 128, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Contenido del Texto */
+        .letter-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.3rem;
+            color: var(--rose-deep);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 1.2rem;
+        }
+
+        .letter-p {
+            font-family: 'Lora', serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        .highlight {
+            color: var(--rose-deep);
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        .question {
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 20px 0 15px;
+            font-size: 1rem;
+        }
+
+        /* Botones de Respuesta */
+        .buttons { display: flex; gap: 12px; justify-content: center; margin-bottom: 15px; }
         .btn {
-            border: 0; padding: 12px 20px; border-radius: 999px; font-weight: 700;
-            cursor: pointer; transition: 0.3s;
+            border: 0; padding: 12px 22px; border-radius: 999px; font-weight: 700; font-size: 0.95rem;
+            cursor: pointer; transition: all 0.2s ease;
         }
-        .btn-yes { background: var(--sky-deep); color: white; box-shadow: 0 5px 15px rgba(73,169,226,0.3); }
-        .btn-no { background: #f0f8ff; color: var(--muted); border: 1px solid #d6e8f5; }
+        .btn-yes {
+            background: linear-gradient(180deg, var(--rose-pastel) 0%, var(--rose-deep) 100%);
+            color: white; box-shadow: 0 6px 15px rgba(184, 115, 128, 0.25);
+        }
+        .btn-yes:hover { filter: saturate(1.1); transform: translateY(-1px); }
+        .btn-no { background: #fff; color: #777; border: 1px solid #ebd6d9; }
+        .btn-no:hover { background: #fffafb; }
 
-        .status { text-align: center; font-weight: 600; display: none; color: var(--sky-deep); animation: fadeIn 0.5s; }
+        .status { text-align: center; font-weight: 600; display: none; color: var(--rose-deep); animation: fadeIn 0.4s; }
 
-        .signature { font-family: 'Dancing Script', cursive; font-size: 1.8rem; text-align: center; color: var(--sky-deep); margin-top: 20px; }
+        .letter-signature { font-family: 'Dancing Script', cursive; font-size: 2rem; color: var(--rose-deep); text-align: center; margin-top: 15px; }
         
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .heart {
             position: fixed; pointer-events: none; z-index: 999;
-            color: var(--sky); font-size: 20px;
+            color: var(--rose-pastel); font-size: 22px;
         }
     </style>
 </head>
 <body>
+
     <div class="stars" id="stars"></div>
 
-    <div class="scene">
-        <div class="envelope" id="envelope">
-            <div class="seal">✨</div>
+    <div class="wrapper">
+        <!-- Sobre Mágico -->
+        <div class="magic-envelope" id="magicEnvelope">
+            <div class="seal-button">🌹</div>
             <div class="envelope-text">Para Usted</div>
         </div>
 
-        <main class="letter" id="letter">
-            <h1>Hola...</h1>
-            <p>
-                He estado reflexionando sobre cómo ocurren los encuentros y solo puedo concluir que <em>valió totalmente la pena</em> haberme atrevido a enviarle aquel primer mensaje. Lo que inició de forma sencilla, se ha vuelto mi momento favorito del día.
-            </p>
-            <p>
-                Es cierto que no pude estar presente para felicitarla en su cumpleaños, pero creo que los tiempos han sido perfectos; porque desde que comenzamos a conversar, <em>siento algo muy especial con Usted</em>. Es una conexión genuina que valoro profundamente.
-            </p>
-            <p>
-                Me entusiasma cada conversación y, sobre todo, me ilusiona mucho <em>cumplir esa lista de planes que vamos construyendo</em>. Quiero estar ahí para compartirlos y conocerla aún más.
-            </p>
+        <!-- Carta que emerge -->
+        <main class="premium-letter" id="premiumLetter">
+            <div class="close-btn" id="closeLetter" title="Cerrar carta">✕</div>
+            <h1 class="letter-title">Hola...</h1>
             
-            <p style="text-align: center; font-weight: 600;">¿Me daría Usted la oportunidad de compartir una cita?</p>
+            <p class="letter-p">
+                He estado reflexionando sobre cómo ocurren los encuentros y solo puedo concluir que <span class="highlight">valió totalmente la pena</span> haberme atrevido a enviarle aquel primer mensaje. Lo que inició de forma sencilla, se ha vuelto mi momento favorito del día.
+            </p>
+
+            <p class="letter-p">
+                Es cierto que no pude estar presente para felicitarla en su cumpleaños, pero creo firmemente que los tiempos han sido perfectos; porque desde que comenzamos a conversar de verdad, <span class="highlight">siento algo muy especial con Usted</span>. Es una conexión tan bonita, natural y ligera que no quiero dejar ir.
+            </p>
+
+            <p class="letter-p">
+                Me entusiasma cada conversación y, sobre todo, me ilusiona mucho <span class="highlight">cumplir esa lista de planes que vamos construyendo</span> juntos... y todos los que se nos ocurran en el camino. Quiero estar ahí para compartirlos, ver de frente esa sonrisa que tanto me gusta y conocerla aún más.
+            </p>
+
+            <p class="question">¿Me daría Usted la oportunidad de compartir una cita?</p>
 
             <div class="buttons" id="btn-group">
-                <button class="btn btn-yes" id="yes-btn">Sí, acepto 💙</button>
+                <button class="btn btn-yes" id="yes-btn">Sí, acepto 💕</button>
                 <button class="btn btn-no" id="no-btn">Tal vez después</button>
             </div>
 
             <div class="status" id="status-msg"></div>
 
-            <div class="signature">Con respeto y cariño,<br>El Inge</div>
+            <div class="letter-signature">Con mucho cariño,<br>El Inge</div>
         </main>
     </div>
 
     <script>
         emailjs.init('B1-PAr0OwHo-wb6FS');
 
-        // Estrellas de fondo
+        // Generador de estrellas de fondo
         const starsContainer = document.getElementById('stars');
-        for(let i=0; i<30; i++) {
+        for(let i=0; i<35; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            star.style.width = star.style.height = Math.random() * 4 + 2 + 'px';
+            star.style.width = star.style.height = Math.random() * 3 + 2 + 'px';
             star.style.left = Math.random() * 100 + 'vw';
             star.style.top = Math.random() * 100 + 'vh';
             star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
             starsContainer.appendChild(star);
         }
 
-        const envelope = document.getElementById('envelope');
-        const letter = document.getElementById('letter');
+        const magicEnvelope = document.getElementById('magicEnvelope');
+        const premiumLetter = document.getElementById('premiumLetter');
+        const closeLetter = document.getElementById('closeLetter');
         const statusMsg = document.getElementById('status-msg');
         const btnGroup = document.getElementById('btn-group');
 
-        // Abrir sobre
-        envelope.addEventListener('click', () => {
-            envelope.classList.add('open');
-            setTimeout(() => letter.classList.add('show'), 500);
+        // Acción: Abrir Carta
+        magicEnvelope.addEventListener('click', () => {
+            magicEnvelope.classList.add('fade-out');
+            setTimeout(() => {
+                premiumLetter.classList.add('show-up');
+            }, 200);
         });
 
+        // Acción: Cerrar Carta
+        closeLetter.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita conflictos de clicks
+            premiumLetter.classList.remove('show-up');
+            setTimeout(() => {
+                magicEnvelope.classList.remove('fade-out');
+            }, 300);
+        });
+
+        // Animación de corazones flotantes (Efecto Rosa)
         function popHearts() {
-            for(let i=0; i<15; i++) {
+            for(let i=0; i<16; i++) {
                 const h = document.createElement('div');
                 h.className = 'heart';
-                h.innerHTML = '💙';
+                h.innerHTML = '💕';
                 h.style.left = '50%'; h.style.top = '50%';
                 document.body.appendChild(h);
                 const angle = Math.random() * Math.PI * 2;
-                const dist = 100 + Math.random() * 150;
+                const dist = 120 + Math.random() * 140;
                 h.animate([
                     { transform: 'translate(-50%, -50%) scale(0)', opacity: 1 },
-                    { transform: `translate(calc(-50% + ${Math.cos(angle)*dist}px), calc(-50% + ${Math.sin(angle)*dist}px)) scale(1)`, opacity: 0 }
-                ], { duration: 1500, easing: 'ease-out' });
-                setTimeout(() => h.remove(), 1500);
+                    { transform: `translate(calc(-50% + ${Math.cos(angle)*dist}px), calc(-50% + ${Math.sin(angle)*dist}px)) scale(1.1)`, opacity: 0 }
+                ], { duration: 1600, easing: 'ease-out' });
+                setTimeout(() => h.remove(), 1600);
             }
         }
 
+        // Envío de respuesta con EmailJS
         function sendResponse(accepted) {
             btnGroup.style.display = 'none';
             statusMsg.style.display = 'block';
@@ -188,8 +319,8 @@
 
             const templateParams = {
                 to_email: 'appsinstalador1234@gmail.com',
-                message: accepted ? "✅ Dijo SÍ (Tratándote de Usted)" : "❌ Dijo que después",
-                respuesta: accepted ? "Sí, acepto la invitación 💙" : "Tal vez después ✨"
+                message: accepted ? "✅ Dijo SÍ a la invitación (Tratando de Usted)" : "❌ Dijo que en otro momento",
+                respuesta: accepted ? "Sí, acepto la invitación 💕" : "Tal vez en otro momento ✨"
             };
 
             emailjs.send('service_2m33mni', 'template_2nh2ba8', templateParams)
@@ -198,11 +329,11 @@
                         statusMsg.innerHTML = "¡Me hace muy feliz! Gracias por decir que sí. ✨";
                         popHearts();
                     } else {
-                        statusMsg.innerHTML = "Entiendo perfectamente. Aquí estaré. 🌊";
+                        statusMsg.innerHTML = "Entiendo perfectamente. Muchas gracias por su sinceridad. 🌸";
                     }
                 })
                 .catch(() => {
-                    statusMsg.innerHTML = "Error al enviar. ¡Pero lo que cuenta es la intención! 😊";
+                    statusMsg.innerHTML = "Error al enviar, pero guardo su intención con mucho cariño. 😊";
                 });
         }
 
