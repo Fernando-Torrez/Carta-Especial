@@ -1,1 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algo especial para ti</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Raleway:wght@300;500;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Raleway', sans-serif;
+            background: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #4a4a4a;
+            background-image: linear-gradient(135deg, #FFF0F5 0%, #FFE4E1 100%);
+        }
 
+        .scene {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+        }
+
+        .envelope {
+            position: relative;
+            width: 360px;
+            height: 240px;
+            background: #fdfbf7;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(221, 160, 221, 0.3);
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+        }
+
+        .envelope-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #fdfbf7;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backface-visibility: hidden;
+            transform-origin: top;
+            transition: transform 0.9s ease;
+            border: 1px solid #f3ebe1;
+            box-sizing: border-box;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 180px solid transparent;
+            border-right: 180px solid transparent;
+            border-top: 130px solid #f5eae0;
+            transform-origin: top;
+            transition: transform 0.9s ease;
+            z-index: 2;
+        }
+
+        .wax-seal {
+            position: absolute;
+            bottom: 15px;
+            width: 55px;
+            height: 55px;
+            background: #e6a8b1;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(184, 115, 128, 0.4);
+            z-index: 3;
+            animation: pulse 2.5s infinite;
+            border: 2px dashed #fff;
+        }
+
+        .open-message {
+            margin-top: 40px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            color: #b87380;
+            text-align: center;
+        }
+
+        .letter-content {
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            width: 330px;
+            height: 440px;
+            background: #ffffff;
+            padding: 25px 20px;
+            border-radius: 6px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transform: translateY(120%) scale(0.6);
+            opacity: 0;
+            transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+            z-index: 1;
+            box-sizing: border-box;
+            overflow-y: auto;
+            border: 1px solid #fff5f5;
+        }
+
+        /* Scrollbar estético para el texto */
+        .letter-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .letter-content::-webkit-scrollbar-thumb {
+            background: #f3d5d9;
+            border-radius: 4px;
+        }
+
+        .envelope.open {
+            transform: translateY(140px);
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .envelope.open .envelope-front {
+            transform: rotateX(180deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .envelope.open .letter-content {
+            transform: translateY(-260px) scale(1);
+            opacity: 1;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #b87380;
+            margin-top: 0;
+            margin-bottom: 1.2rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .message {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #555555;
+            margin-bottom: 1.2rem;
+            text-align: justify;
+            font-weight: 300;
+        }
+
+        .highlight {
+            color: #c97a8e;
+            font-weight: 600;
+        }
+
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #b87380;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .closing {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: #666;
+            margin-top: 0.5rem;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .postdata {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #f3d5d9;
+            font-size: 0.85rem;
+            color: #888;
+            font-style: italic;
+            text-align: center;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 10px rgba(184, 115, 128, 0.4); }
+            50% { transform: scale(1.06); box-shadow: 0 6px 15px rgba(184, 115, 128, 0.6); }
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #f7d692;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+            opacity: 0;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 0.8; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <div class="scene">
+        <div class="envelope" id="envelope">
+            <div class="envelope-flap"></div>
+            <div class="envelope-front">
+                <div class="wax-seal">🌹</div>
+                <div class="open-message">Toca aquí para abrir</div>
+            </div>
+
+            <div class="letter-content">
+                <h1 class="title">Para alguien especial</h1>
+
+                <p class="message">
+                    Quería darte este detalle de una forma diferente porque últimamente he estado pensando mucho en nosotros y en lo mucho que disfruto cada momento que pasamos hablando. <span class="highlight">No te imaginas lo bien que me hace escucharte</span> y lo rápido que se me pasa el tiempo cuando estoy contigo.
+                </p>
+
+                <p class="message">
+                    Me encanta descubrir tu forma de ver el mundo, reírme con tus ocurrencias y darme cuenta de que, poco a poco, te has convertido en esa persona con la que siempre quiero compartir mi día. Tienes una vibra increíble que me atrapa por completo.
+                </p>
+
+                <p class="message">
+                    Por eso mismo, no quiero que esto se quede solo en palabras o en mensajes de pantalla. <span class="highlight">Me encantaría hacer muchísimos planes contigo</span>, salir, conocer nuevos lugares y crear recuerdos hermosos juntos. 
+                </p>
+
+                <p class="message">
+                    Gracias por dejarme entrar en tu vida y por hacerme sonreír tanto. Esto es solo el inicio de muchas cosas bonitas que quiero construir a tu lado.
+                </p>
+
+                <div class="signature">Con muchísimo cariño,</div>
+                <div class="closing">Atentamente,<br>El Inge</div>
+
+                <div class="postdata">
+                    P.D.: Te lo digo siempre, pero es que de verdad tienes la sonrisa más linda de todas. ✨
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 40; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
+                star.style.animationDelay = Math.random() * 4 + 's';
+                starsContainer.appendChild(star);
+            }
+
+            const envelope = document.getElementById('envelope');
+            envelope.addEventListener('click', function(e) {
+                // Evita que se cierre por accidente si se hace scroll dentro de la carta
+                if (e.target.closest('.letter-content')) return;
+                
+                this.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
