@@ -3,278 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para alguien inolvidable</title>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <title>Para alguien especial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Quicksand:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
     <style>
         :root {
-            --primary: #dfb36c;
-            --text-dark: #2c2627;
-            --bg-glass: rgba(255, 255, 255, 0.85);
+            --sky: #8bd3f7;
+            --sky-deep: #49a9e2;
+            --mist: #e9f7ff;
+            --ink: #2f3a44;
+            --card-white: rgba(255, 255, 255, 0.9);
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Comfortaa', cursive;
+            margin: 0; padding: 0;
+            font-family: 'Quicksand', sans-serif;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            background: linear-gradient(135deg, #111424 0%, #2a1b35 50%, #1a1223 100%);
+            background: radial-gradient(circle at 20% 10%, var(--mist) 0%, #fff 100%);
         }
 
-        /* Fondo de estrellas */
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
+        /* Estrellas celestes de fondo */
+        .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
         .star {
-            position: absolute;
-            background-color: #fff;
-            border-radius: 50%;
-            animation: twinkle var(--duration) infinite ease-in-out;
-            opacity: 0;
+            position: absolute; background: var(--sky); border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out; opacity: 0;
         }
+        @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 0.6; transform: scale(1.2); } }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.3); }
-            50% { opacity: 0.8; transform: scale(1.2); }
-        }
+        .scene { position: relative; z-index: 10; perspective: 1200px; }
 
-        /* Contenedor Principal */
-        .wrapper {
-            position: relative;
-            width: 90%;
-            max-width: 380px;
-            height: 500px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-        }
-
-        /* Estilo del sobre mágico */
-        .magic-envelope {
-            position: absolute;
-            width: 100%;
-            height: 260px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        /* Sobre Estilo Cristal */
+        .envelope {
+            position: relative; width: 350px; height: 230px;
+            background: var(--card-white);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 211, 247, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(73, 169, 226, 0.15);
             cursor: pointer;
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: scale(1);
-            opacity: 1;
-            z-index: 5;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        .magic-envelope.fade-out {
-            transform: scale(0.8) translateY(-50px);
-            opacity: 0;
-            pointer-events: none;
-        }
+        .envelope.open { transform: translateY(150px) scale(0.9); opacity: 0; pointer-events: none; }
 
-        .seal-button {
-            width: 65px;
-            height: 65px;
-            background: linear-gradient(135deg, #f1dfbb 0%, #dfb36c 100%);
+        .seal {
+            width: 60px; height: 60px;
+            background: linear-gradient(135deg, var(--sky) 0%, var(--sky-deep) 100%);
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 28px;
-            box-shadow: 0 8px 20px rgba(223, 179, 108, 0.4);
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-size: 24px;
+            box-shadow: 0 5px 15px rgba(73, 169, 226, 0.4);
             animation: float 3s infinite ease-in-out;
-            transition: transform 0.3s;
         }
 
-        .magic-envelope:hover .seal-button {
-            transform: scale(1.08);
+        .envelope-text { margin-top: 20px; color: var(--sky-deep); font-weight: 600; letter-spacing: 1px; }
+
+        /* Carta que emerge */
+        .letter {
+            position: absolute; top: 50%; left: 50%;
+            width: min(380px, 90vw); max-height: 85vh;
+            background: white; padding: 35px 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0; pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow-y: auto; z-index: 20;
+            border-top: 6px solid var(--sky);
         }
 
-        .envelope-text {
-            margin-top: 25px;
-            color: #f1dfbb;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
+        .letter.show { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
 
-        /* Contenedor de la Carta Elegante */
-        .premium-letter {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-glass);
-            border-radius: 24px;
-            padding: 35px 25px;
-            box-sizing: border-box;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255,255,255,0.6);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            transform: scale(0.6) translateY(100px);
-            opacity: 0;
-            transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 4;
-        }
+        h1 { font-family: 'Playfair Display', serif; color: var(--sky-deep); font-size: 1.8rem; text-align: center; margin-bottom: 20px; }
+        p { line-height: 1.7; color: var(--ink); font-size: 1rem; text-align: justify; margin-bottom: 15px; }
+        em { color: var(--sky-deep); font-style: normal; font-weight: 600; }
 
-        .premium-letter.show-up {
-            transform: scale(1) translateY(0);
-            opacity: 1;
+        .buttons { display: flex; gap: 10px; justify-content: center; margin: 25px 0; }
+        .btn {
+            border: 0; padding: 12px 20px; border-radius: 999px; font-weight: 700;
+            cursor: pointer; transition: 0.3s;
         }
+        .btn-yes { background: var(--sky-deep); color: white; box-shadow: 0 5px 15px rgba(73,169,226,0.3); }
+        .btn-no { background: #f0f8ff; color: var(--muted); border: 1px solid #d6e8f5; }
 
-        /* Scrollbar minimalista para la carta */
-        .premium-letter::-webkit-scrollbar {
-            width: 4px;
-        }
-        .premium-letter::-webkit-scrollbar-thumb {
-            background: rgba(223, 179, 108, 0.5);
-            border-radius: 10px;
-        }
+        .status { text-align: center; font-weight: 600; display: none; color: var(--sky-deep); animation: fadeIn 0.5s; }
 
-        /* Contenido del Texto */
-        .letter-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.3rem;
-            color: #705427;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 1.5rem;
-        }
+        .signature { font-family: 'Dancing Script', cursive; font-size: 1.8rem; text-align: center; color: var(--sky-deep); margin-top: 20px; }
+        
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .letter-p {
-            font-family: 'Lora', serif;
-            font-size: 1rem;
-            line-height: 1.6;
-            color: var(--text-dark);
-            margin-bottom: 1.2rem;
-            text-align: justify;
-        }
-
-        .highlight {
-            color: #9e7638;
-            font-weight: 600;
-            font-style: italic;
-        }
-
-        .letter-signature {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-            color: #705427;
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-
-        .letter-closing {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #777;
-            text-align: center;
-            margin-top: 0.3rem;
-            font-weight: 600;
-        }
-
-        .letter-pd {
-            margin-top: 1.8rem;
-            padding-top: 1.2rem;
-            border-top: 1px dashed rgba(223, 179, 108, 0.4);
-            font-family: 'Lora', serif;
-            font-size: 0.85rem;
-            color: #555;
-            text-align: center;
-            font-style: italic;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+        .heart {
+            position: fixed; pointer-events: none; z-index: 999;
+            color: var(--sky); font-size: 20px;
         }
     </style>
 </head>
 <body>
-
     <div class="stars" id="stars"></div>
 
-    <div class="wrapper">
-        <!-- El nuevo sobre elegante -->
-        <div class="magic-envelope" id="magicEnvelope">
-            <div class="seal-button">✨</div>
-            <div class="envelope-text">Un mensaje para ti</div>
+    <div class="scene">
+        <div class="envelope" id="envelope">
+            <div class="seal">✨</div>
+            <div class="envelope-text">Para Usted</div>
         </div>
 
-        <!-- La carta que emerge -->
-        <div class="premium-letter" id="premiumLetter">
-            <h1 class="letter-title">Hola, tú...</h1>
+        <main class="letter" id="letter">
+            <h1>Hola...</h1>
+            <p>
+                He estado reflexionando sobre cómo ocurren los encuentros y solo puedo concluir que <em>valió totalmente la pena</em> haberme atrevido a enviarle aquel primer mensaje. Lo que inició de forma sencilla, se ha vuelto mi momento favorito del día.
+            </p>
+            <p>
+                Es cierto que no pude estar presente para felicitarla en su cumpleaños, pero creo que los tiempos han sido perfectos; porque desde que comenzamos a conversar, <em>siento algo muy especial con Usted</em>. Es una conexión genuina que valoro profundamente.
+            </p>
+            <p>
+                Me entusiasma cada conversación y, sobre todo, me ilusiona mucho <em>cumplir esa lista de planes que vamos construyendo</em>. Quiero estar ahí para compartirlos y conocerla aún más.
+            </p>
             
-            <p class="letter-p">
-                Últimamente me he quedado pensando en cómo pasan las cosas y solo puedo decirte que <span class="highlight">valió muchísimo la pena haberte escrito ese primer mensaje</span>. Lo que empezó como una simple conversación, hoy se ha convertido en la parte favorita de mi día.
-            </p>
+            <p style="text-align: center; font-weight: 600;">¿Me daría Usted la oportunidad de compartir una cita?</p>
 
-            <p class="letter-p">
-                Quizás no coincidimos a tiempo y no pude estar ahí para felicitarte en tu cumpleaños, pero creo firmemente que los tiempos son perfectos. Porque desde que empezamos a hablar de verdad, <span class="highlight">siento algo muy especial contigo</span>; es una conexión tan bonita, natural y ligera que no quiero dejar ir.
-            </p>
-
-            <p class="letter-p">
-                Me encanta cómo se nos va el tiempo volando y, sobre todo, me emociona muchísimo todo lo que platicamos. Ahora mismo <span class="highlight">lo único que quiero es cumplir esa lista de planes</span> que vamos armando paso a paso... y todos los que se nos ocurran en el camino. Quiero estar ahí, compartir contigo y ver de frente esa sonrisa que tanto me gusta.
-            </p>
-
-            <p class="letter-p">
-                Gracias por cruzarte en mi camino y por hacer que hablar contigo se sienta tan increíble.
-            </p>
-
-            <div class="letter-signature">Con mucho cariño,</div>
-            <div class="letter-closing">El Inge</div>
-
-            <div class="letter-pd">
-                P.D.: Cada plan que imaginamos se queda guardado aquí... y ya me muero por empezar el primero a tu lado. ✨
+            <div class="buttons" id="btn-group">
+                <button class="btn btn-yes" id="yes-btn">Sí, acepto 💙</button>
+                <button class="btn btn-no" id="no-btn">Tal vez después</button>
             </div>
-        </div>
+
+            <div class="status" id="status-msg"></div>
+
+            <div class="signature">Con respeto y cariño,<br>El Inge</div>
+        </main>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Generador de estrellas de fondo
-            const starsContainer = document.getElementById('stars');
-            for (let i = 0; i < 45; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                star.style.width = Math.random() * 3 + 1 + 'px';
-                star.style.height = star.style.width;
-                star.style.left = Math.random() * 100 + 'vw';
-                star.style.top = Math.random() * 100 + 'vh';
-                star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
-                star.style.animationDelay = Math.random() * 3 + 's';
-                starsContainer.appendChild(star);
-            }
+        emailjs.init('B1-PAr0OwHo-wb6FS');
 
-            // Animación de apertura
-            const magicEnvelope = document.getElementById('magicEnvelope');
-            const premiumLetter = document.getElementById('premiumLetter');
+        // Estrellas de fondo
+        const starsContainer = document.getElementById('stars');
+        for(let i=0; i<30; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = star.style.height = Math.random() * 4 + 2 + 'px';
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
+            starsContainer.appendChild(star);
+        }
 
-            magicEnvelope.addEventListener('click', () => {
-                magicEnvelope.classList.add('fade-out');
-                setTimeout(() => {
-                    premiumLetter.classList.add('show-up');
-                }, 300); // Pequeño delay para que se aprecie la transición
-            });
+        const envelope = document.getElementById('envelope');
+        const letter = document.getElementById('letter');
+        const statusMsg = document.getElementById('status-msg');
+        const btnGroup = document.getElementById('btn-group');
+
+        // Abrir sobre
+        envelope.addEventListener('click', () => {
+            envelope.classList.add('open');
+            setTimeout(() => letter.classList.add('show'), 500);
         });
+
+        function popHearts() {
+            for(let i=0; i<15; i++) {
+                const h = document.createElement('div');
+                h.className = 'heart';
+                h.innerHTML = '💙';
+                h.style.left = '50%'; h.style.top = '50%';
+                document.body.appendChild(h);
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 100 + Math.random() * 150;
+                h.animate([
+                    { transform: 'translate(-50%, -50%) scale(0)', opacity: 1 },
+                    { transform: `translate(calc(-50% + ${Math.cos(angle)*dist}px), calc(-50% + ${Math.sin(angle)*dist}px)) scale(1)`, opacity: 0 }
+                ], { duration: 1500, easing: 'ease-out' });
+                setTimeout(() => h.remove(), 1500);
+            }
+        }
+
+        function sendResponse(accepted) {
+            btnGroup.style.display = 'none';
+            statusMsg.style.display = 'block';
+            statusMsg.innerHTML = "Enviando respuesta...";
+
+            const templateParams = {
+                to_email: 'appsinstalador1234@gmail.com',
+                message: accepted ? "✅ Dijo SÍ (Tratándote de Usted)" : "❌ Dijo que después",
+                respuesta: accepted ? "Sí, acepto la invitación 💙" : "Tal vez después ✨"
+            };
+
+            emailjs.send('service_2m33mni', 'template_2nh2ba8', templateParams)
+                .then(() => {
+                    if(accepted) {
+                        statusMsg.innerHTML = "¡Me hace muy feliz! Gracias por decir que sí. ✨";
+                        popHearts();
+                    } else {
+                        statusMsg.innerHTML = "Entiendo perfectamente. Aquí estaré. 🌊";
+                    }
+                })
+                .catch(() => {
+                    statusMsg.innerHTML = "Error al enviar. ¡Pero lo que cuenta es la intención! 😊";
+                });
+        }
+
+        document.getElementById('yes-btn').addEventListener('click', () => sendResponse(true));
+        document.getElementById('no-btn').addEventListener('click', () => sendResponse(false));
     </script>
 </body>
 </html>
